@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Oswald&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Tareas pendientes</h1>
+    <div class="tarea_pendientes">
+        <h4 id="text">Añadir tarea<button onclick="añadirTareas()" id="añadir">+</button></h4>
+        <ul id="listaTareas"></ul>
+    </div>
+    <script>
+        function añadirTareas() {
+            let tarea = prompt('Tarea: ');
+            if (!tarea || tarea.trim() === '') return;
+
+            let lista = document.getElementById('listaTareas');
+            let nuevaTarea = document.createElement('li');
+
+            let textoTarea = document.createElement('span');
+            textoTarea.textContent = tarea;
+
+            let eliminar = document.createElement('button');
+            eliminar.textContent = '🗑';
+            eliminar.onclick = function () {
+                lista.removeChild(nuevaTarea);
+            };
+
+            nuevaTarea.appendChild(textoTarea);
+            nuevaTarea.appendChild(eliminar);
+            lista.appendChild(nuevaTarea);
+
+            let recordatorio = Number(prompt('¿En cuántos minutos quieres establecer un recordatorio?(deja un vacio si no quieres)'));
+            if (recordatorio != '' && recordatorio > 0 && recordatorio != 'str'){
+                let resul_alarm = document.getElementById('recordatorio');
+                resul_alarm = `Tarea pendiente: *${tarea}* en ${recordatorio}`;
+
+                setTimeout(() =>{
+                    let mensaje = `¡Recordatorio de Tarea pendiente!: ${tarea}`;
+                    hablar(mensaje);
+                    alert(mensaje);
+                    resul_alarm.textContent = 'No hay recordatorios aún.'
+                }, recordatorio * 60000);
+            }
+        }
+        function hablar(texto) {
+            let voz = new SpeechSynthesisUtterance(texto);
+            voz.lang = 'es-ES';
+            speechSynthesis.speak(voz);
+        }
+    </script>
+</body>
+</html>
